@@ -1,0 +1,104 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{ .Values.service.app }}
+  name: {{ .Values.service.app }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.service.app }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.service.app }}
+      annotations:
+        rollme: {{ randAlphaNum 5 | quote }}
+
+    spec:
+
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: {{ .Values.nodeSelector.name }}
+                operator: In
+                values:
+                  - {{ .Values.nodeSelector.labels }}
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                  - {{ .Values.service.app }}
+            topologyKey: "kubernetes.io/hostname"
+
+      imagePullSecrets:
+        - name: {{ .Values.image.imagePullSecrets }}
+
+      hostAliases:
+        - ip: 127.0.0.1
+          hostnames:
+            - memcached
+
+      initContainers:
+
+        - name: appsetup
+          image: "{{ .Values.image.registryfullpath }}/fpm:{{ .Values.image.tag }}"
+          imagePullPolicy: Always
+          resources:
+            limits:
+              cpu: 500m
+            requests:
+              cpu: 100m
+          command:
+            - /bin/bash
+            - '-c'
+          args:
+            - cd /app; console/yii app/setup --interactive=0
+          volumeMounts:
+            - name: env
+              mountPath: /app/.env
+              subPath: env
+      volumes:
+        - name: env
+          configMap:
+            name: {{ .Values.service.app }}-{{ .Values.global.env }}
+
+      containers:
+
+        - name: memcached
+          image: memcached
+
+        - name: fpm
+          image: "{{ .Values.image.registryfullpath }}/fpm:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          resources:
+            limits:
+              cpu: 500m
+              memory: {{ .Values.service.memorylimit | default "256Mi" | quote }}
+            requests:
+              cpu: 10m
+          env:
+            - name: DEPLOYMENT_DATE
+              value: {{ .Release.Time }}
+            - name: TZ
+              value: America/New_York
+          ports:
+{{- range $port := $.Values.ports }}
+            - containerPort: {{ $port.portNumber }}
+              protocol: TCP
+{{- end }}
+          volumeMounts:
+            - name: env
+              mountPath: /app/.env
+              subPath: env
+      volumes:
+        - name: env
+          configMap:
+            name: {{ .Values.service.app }}-{{ .Values.global.env }}
+

@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Values.service.app }}
+spec:
+  selector:
+    app: {{ .Values.service.app }}
+  ports:
+{{- range $port := $.Values.ports }}
+  - name: {{ $port.name }}
+    protocol: TCP
+    port: {{ $port.portNumber }}
+{{- end }}
+

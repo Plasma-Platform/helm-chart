@@ -1,0 +1,52 @@
+{{- range $cron := $.Values.cron }}
+
+---
+
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ $.Values.service.app }}-cron-{{ $cron.name }}
+  annotations:
+    "helm.sh/hook-weight": "0"
+    "helm.sh/hook-delete-policy": hook-succeeded,hook-failed
+spec:
+  successfulJobsHistoryLimit: 30
+  failedJobsHistoryLimit: 30
+  concurrencyPolicy: Forbid
+  schedule: "{{ $cron.schedule }}"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+            restartPolicy: Never
+            containers:
+              - name: {{ $.Values.service.app }}-{{ $cron.name }}
+                image: "{{ $.Values.image.registryfullpath }}/fpm:{{ $.Values.image.tag }}"
+                imagePullPolicy: IfNotPresent
+                resources:
+                  limits:
+                    cpu: 500m
+                  requests:
+                    cpu: 10m
+                command: ["/bin/bash", "-c"]
+                args: ["{{ $cron.args }}"]
+                env:
+                  - name: DEPLOYMENT_DATE
+                    value: {{ $.Release.Time }}
+                  - name: TZ
+                    value: America/New_York
+                volumeMounts:
+                  - name: env
+                    mountPath: /app/.env
+                    subPath: env
+            volumes:
+              - name: env
+                configMap:
+                  name: {{ $.Values.service.app }}-{{ $.Values.global.env }}
+            restartPolicy: Never
+            imagePullSecrets:
+              - name: {{ $.Values.image.imagePullSecrets }}
+            terminationGracePeriodSeconds: 30
+      
+{{- end }}
+

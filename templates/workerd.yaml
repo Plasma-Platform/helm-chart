@@ -1,0 +1,55 @@
+{{- range $worker := $.Values.workers }}
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{ $.Values.service.app }}-{{ $worker.name }}
+  name: {{ $.Values.service.app }}-{{ $worker.name }}
+spec:
+  replicas: {{ $worker.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ $.Values.service.app }}-{{ $worker.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ $.Values.service.app }}-{{ $worker.name }}
+      annotations:
+        rollme: {{ randAlphaNum 5 | quote }}
+    spec:
+      containers:
+        - name: {{ $.Values.service.app }}-{{ $worker.name }}
+          image: "{{ $.Values.image.registryfullpath }}/fpm:{{ $.Values.image.tag }}"
+          imagePullPolicy: {{ $.Values.image.pullPolicy }}
+          resources:
+            limits:
+              cpu: 500m
+            requests:
+              cpu: 10m
+          command: ["/bin/bash", "-c"]
+          args: ["{{ $worker.args }}"]
+          env:
+            - name: DEPLOYMENT_DATE
+              value: {{ $.Release.Time }}
+            - name: TZ
+              value: America/New_York
+          volumeMounts:
+            - name: env
+              mountPath: /app/.env
+              subPath: env
+      volumes:
+        - name: env
+          configMap:
+            name: {{ $.Values.service.app }}-{{ $.Values.global.env }}
+      restartPolicy: Always
+      nodeSelector:
+        {{ $.Values.nodeSelector.name }}: workers
+      imagePullSecrets:
+        - name: {{ $.Values.image.imagePullSecrets }}
+      terminationGracePeriodSeconds: 30
+
+{{- end }}
+

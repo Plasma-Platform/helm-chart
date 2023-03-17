@@ -1,0 +1,4 @@
+*.swp
+*~
+example.values.yaml
+.git*

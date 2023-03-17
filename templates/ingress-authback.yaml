@@ -1,0 +1,40 @@
+{{- if .Values.authback -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Values.service.app }}-back
+  annotations:
+    nginx.ingress.kubernetes.io/server-snippet: |
+      location = /robots.txt { add_header Content-Type text/plain; return 200 'User-agent: *\nDisallow: /\n'; }
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"  
+    nginx.ingress.kubernetes.io/connection-proxy-header: close
+    nginx.ingress.kubernetes.io/proxy-body-size: 200m
+    nginx.ingress.kubernetes.io/server-alias: {{ .Values.authback.host }}
+spec:
+  ingressClassName: nginx
+  defaultBackend:
+    service:
+      name: {{ .Values.service.app }}
+      port:
+        number: {{ .Values.authback.portb }}
+  tls:
+    - hosts:
+        - {{ .Values.authback.host }}
+      secretName: {{ .Values.service.app }}-back-tls
+  rules:
+  - host: {{ .Values.authback.host }}
+    http:
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+          backend:
+            service:
+              name: {{ .Values.service.app }}
+              port:
+                number: {{ .Values.authback.portb }}
+status:
+  loadBalancer:
+    ingress:
+    - hostname: {{ .Values.authback.host }}
+{{- end -}}
+

@@ -1,0 +1,57 @@
+# Example values.yaml for Helm
+
+replicaCount: 1
+
+nodeSelector:
+  name: doks.digitalocean.com/node-pool
+  labels: services
+
+ingress:
+  enabled: enabled
+  hosts: ''
+
+image:
+  tag: prod
+  pullPolicy: Always
+  imagePullSecrets: gitlab
+  registryfullpath: ''
+
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  app: example-project
+  type: ClusterIP
+  port: 80
+  test: 8080
+#  memorylimit: 512Mi
+
+ports:
+  - name: http
+    portNumber: 80
+  - name: test
+    portNumber: 8080
+#  - name: authback
+#    portNumber: 8002
+
+#authback:
+#  portb: 8002
+#  host: authback-example-project.yourdomain.com
+
+#workers:
+#  - name: "rabbit-worker-aa"
+#    args: "cd /app; console/yii aa/listen"
+#    replicaCount: 1
+#  - name: "rabbit-worker-bb"
+#    args: "cd /app; console/yii delivery-default-worker-queue/listen"
+#    replicaCount: 1
+
+#cron:
+#  - name: "cc-dd"
+#    args: "cd app; php console/yii worker/cc-dd 6 '-30 minutes'"
+#    schedule: "0 2 * * *"
+#  - name: "ee-ff"
+#    args: "cd app; php console/yii worker/ee-ff 4 '-30 minutes'"
+#    schedule: "*/30 * * * *"
+
+
