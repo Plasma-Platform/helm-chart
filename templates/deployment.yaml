@@ -48,7 +48,7 @@ spec:
       initContainers:
 
         - name: appsetup
-          image: "{{ .Values.image.registryfullpath }}/fpm:{{ .Values.image.tag }}"
+          image: {{ include "fpm.image" . }}
           imagePullPolicy: Always
           resources:
             limits:
@@ -75,7 +75,7 @@ spec:
           image: memcached
 
         - name: fpm
-          image: "{{ .Values.image.registryfullpath }}/fpm:{{ .Values.image.tag }}"
+          image: {{ include "fpm.image" . }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           resources:
             limits:

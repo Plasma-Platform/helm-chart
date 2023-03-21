@@ -1,0 +1,40 @@
+# Default values for this Helm Chart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+# They can be overridden by user-supplied values file, such as -f values.yaml,
+# which can in turn be overridden by --set parameters.
+
+global:
+  env: "prod"
+
+replicaCount: 1
+
+ingress:
+  enabled: enabled
+
+migrate:
+  enabled: enabled
+
+image:
+  tag: prod
+  pullPolicy: Always
+  imagePullSecrets: gitlab
+  registryfullpath: ''
+
+ports:
+  - name: http
+    portNumber: 80
+  - name: test
+    portNumber: 8080
+
+nodeSelector:
+  name: doks.digitalocean.com/node-pool
+  labels: services
+
+nameOverride: ""
+fullnameOverride: ""
+
+tolerations: []
+
+affinity: {}
+

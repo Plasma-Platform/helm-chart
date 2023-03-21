@@ -1,24 +1,24 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: "{{ .Release.Name }}-functional"
+  name: "{{ .Release.Name }}-unit"
+  labels:
+    app: {{ .Values.service.app }}
   annotations:
-    "helm.sh/hook": "test-success"
+    "helm.sh/hook": "test"
+    "helm.sh/hook-weight": "-1"
 spec:
   containers:
-    - name: functional
-      image: "{{ .Values.image.registryfullpath }}/fpm:{{ .Values.image.tag }}"
+    - name: unit
+      image: {{ include "fpm.image" . }}
       imagePullPolicy: {{ .Values.image.pullPolicy }}
       resources:
         limits:
           cpu: 500m
         requests:
           cpu: 10m
-      command: ["/bin/bash", "-c"]
-      args: ["cd /app/; /bin/bash ./functional.sh"]
-      env:
-      - name: test_url
-        value: {{ .Values.service.app }}:8080
+      command: ["bash", "-c"]
+      args: ["cd /app/; /bin/bash ./unit.sh --coverage-text --no-colors"]
       volumeMounts:
         - name: env
           mountPath: /app/.env
@@ -29,6 +29,6 @@ spec:
         name: {{ .Values.service.app }}-{{ .Values.global.env }}
   restartPolicy: Never
   nodeSelector:
-    {{ .Values.nodeSelector.name }}: {{ .Values.nodeSelector.labels }}
+     {{ .Values.nodeSelector.name }}: {{ .Values.nodeSelector.labels }}
   imagePullSecrets:
     - name: {{ .Values.image.imagePullSecrets }}
