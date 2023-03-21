@@ -11,4 +11,7 @@ spec:
     protocol: TCP
     port: {{ $port.portNumber }}
 {{- end }}
+  - name: memcached
+    protocol: TCP
+    port: 11211
 
