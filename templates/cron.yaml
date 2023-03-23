@@ -1,4 +1,4 @@
-{{- range $cron := $.Values.cron }}
+{{- range $cron := $.Values.cronjobs }}
 
 ---
 
@@ -18,35 +18,36 @@ spec:
     spec:
       template:
         spec:
-            restartPolicy: Never
-            containers:
-              - name: {{ $.Values.service.app }}-{{ $cron.name }}
-                image: "{{ $.Values.image.registryfullpath }}/fpm:{{ $.Values.image.tag }}"
-                imagePullPolicy: IfNotPresent
-                resources:
-                  limits:
-                    cpu: 500m
-                  requests:
-                    cpu: 10m
-                command: ["/bin/bash", "-c"]
-                args: ["{{ $cron.args }}"]
-                env:
-                  - name: DEPLOYMENT_DATE
-                    value: {{ $.Release.Time }}
-                  - name: TZ
-                    value: America/New_York
-                volumeMounts:
-                  - name: env
-                    mountPath: /app/.env
-                    subPath: env
-            volumes:
-              - name: env
-                configMap:
-                  name: {{ $.Values.service.app }}-{{ $.Values.global.env }}
-            restartPolicy: Never
-            imagePullSecrets:
-              - name: {{ $.Values.image.imagePullSecrets }}
-            terminationGracePeriodSeconds: 30
-      
+          restartPolicy: Never
+          containers:
+            - name: {{ $.Values.service.app }}-{{ $cron.name }}
+              image: "{{ $.Values.image.registryfullpath }}/fpm:{{ $.Values.image.tag }}"
+              imagePullPolicy: IfNotPresent
+              resources:
+                limits:
+                  cpu: 500m
+                requests:
+                  cpu: 10m
+              command: ["/bin/bash", "-c"]
+              args: ["{{ $cron.args }}"]
+              env:
+{{- include "fpm.secrets" $.Values.secrets | indent 16 }}
+                - name: DEPLOYMENT_DATE
+                  value: {{ now | quote }}
+                - name: TZ
+                  value: America/New_York
+              volumeMounts:
+                - name: env
+                  mountPath: /app/.env
+                  subPath: env
+          volumes:
+            - name: env
+              configMap:
+                name: {{ $.Values.service.app }}-{{ $.Values.global.env }}
+          restartPolicy: Never
+          imagePullSecrets:
+            - name: {{ $.Values.image.imagePullSecrets }}
+          terminationGracePeriodSeconds: 30
+    
 {{- end }}
 
