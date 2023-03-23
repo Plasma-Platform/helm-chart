@@ -1,3 +1,4 @@
+{{- if .Values.phptests.enabled -}}
 apiVersion: v1
 kind: Pod
 metadata:
@@ -32,3 +33,5 @@ spec:
      {{ .Values.nodeSelector.name }}: {{ .Values.nodeSelector.labels }}
   imagePullSecrets:
     - name: {{ .Values.image.imagePullSecrets }}
+
+{{- end -}}

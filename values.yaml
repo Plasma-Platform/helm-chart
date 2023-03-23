@@ -15,6 +15,12 @@ ingress:
 migrate:
   enabled: enabled
 
+phptests:
+  enabled: enabled
+
+memcached:
+  enabled: enabled
+
 image:
   tag: prod
   pullPolicy: Always
