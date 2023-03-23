@@ -55,6 +55,10 @@ spec:
               cpu: 500m
             requests:
               cpu: 100m
+          env:
+{{- include "fpm.secrets" $.Values.secrets | indent 12 }}
+            - name: TZ
+              value: America/New_York
           command:
             - /bin/bash
             - '-c'
@@ -84,8 +88,9 @@ spec:
             requests:
               cpu: 10m
           env:
+{{- include "fpm.secrets" $.Values.secrets | indent 12 }}
             - name: DEPLOYMENT_DATE
-              value: {{ .Release.Time }}
+              value: {{ now | quote }}
             - name: TZ
               value: America/New_York
           ports:

@@ -1,5 +1,5 @@
-{{- range $worker := $.Values.workers }}
 
+{{- range $worker := $.Values.workers }}
 ---
 
 apiVersion: apps/v1
@@ -32,8 +32,9 @@ spec:
           command: ["/bin/bash", "-c"]
           args: ["{{ $worker.args }}"]
           env:
+{{- include "fpm.secrets" $.Values.secrets | indent 12 }}
             - name: DEPLOYMENT_DATE
-              value: {{ $.Release.Time }}
+              value: {{ now | quote }}
             - name: TZ
               value: America/New_York
           volumeMounts:
