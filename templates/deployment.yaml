@@ -45,8 +45,8 @@ spec:
           hostnames:
             - memcached
 
-{{- if .Values.migrate.enabled -}}
       initContainers:
+{{- if .Values.migrate.enabled }}
         - name: appsetup
           image: {{ include "fpm.image" . }}
           imagePullPolicy: Always
@@ -76,7 +76,7 @@ spec:
 
       containers:
 
-{{- if .Values.memcached.enabled -}}
+{{- if .Values.memcached.enabled }}
         - name: memcached
           image: memcached
 {{- end }}
