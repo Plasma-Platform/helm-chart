@@ -45,8 +45,8 @@ spec:
           hostnames:
             - memcached
 
-      initContainers:
 {{- if .Values.migrate.enabled }}
+      initContainers:
         - name: appsetup
           image: {{ include "fpm.image" . }}
           imagePullPolicy: Always
@@ -63,7 +63,7 @@ spec:
             - /bin/bash
             - '-c'
           args:
-            - cd /app; console/yii app/setup --interactive=0
+            - cd /app; {{$.Values.yii.path}} app/setup --interactive=0
           volumeMounts:
             - name: env
               mountPath: /app/.env

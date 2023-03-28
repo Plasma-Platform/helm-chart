@@ -9,6 +9,9 @@ global:
 
 replicaCount: 1
 
+yii:
+  path: 'console/yii'
+
 ingress:
   enabled: enabled
 
