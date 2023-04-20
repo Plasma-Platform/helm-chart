@@ -54,4 +54,16 @@ ports:
 #    args: "cd app; php console/yii worker/ee-ff 4 '-30 minutes'"
 #    schedule: "*/30 * * * *"
 
+onepass:
+  enabled: true
+onepassitems:
+  - k8s-secret-1
+
+secrets:
+  - name: USER
+    secretKeyRefName: k8s-secret-1
+    secretKeyRefKey: user
+  - name: TOKEN
+    secretKeyRefName: k8s-secret-1
+    secretKeyRefKey: token
 
