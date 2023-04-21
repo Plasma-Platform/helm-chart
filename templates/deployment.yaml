@@ -15,6 +15,9 @@ spec:
         app: {{ .Values.service.app }}
       annotations:
         rollme: {{ randAlphaNum 5 | quote }}
+{{- if .Values.onepass.enabled }}
+        operator.1password.io/auto-restart: "true"
+{{- end }}
 
     spec:
 
