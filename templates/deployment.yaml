@@ -4,6 +4,10 @@ metadata:
   labels:
     app: {{ .Values.service.app }}
   name: {{ .Values.service.app }}
+  annotations:
+{{- if .Values.onepass.enabled }}
+    operator.1password.io/auto-restart: "true"
+{{- end }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -15,9 +19,6 @@ spec:
         app: {{ .Values.service.app }}
       annotations:
         rollme: {{ randAlphaNum 5 | quote }}
-{{- if .Values.onepass.enabled }}
-        operator.1password.io/auto-restart: "true"
-{{- end }}
 
     spec:
 
