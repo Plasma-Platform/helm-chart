@@ -7,6 +7,8 @@ metadata:
   annotations:
 {{- if .Values.onepass.enabled }}
     operator.1password.io/auto-restart: "true"
+    operator.1password.io/item-path: "vaults/{{ .Values.global.env }}/items/{{ .Values.onepassitem }}"
+    operator.1password.io/item-name: "{{ .Values.onepassitem }}"
 {{- end }}
 spec:
   replicas: {{ .Values.replicaCount }}
