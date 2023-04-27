@@ -6,6 +6,7 @@
 
 global:
   env: "prod"
+  onepassvault: "dev"
 
 replicaCount: 1
 
