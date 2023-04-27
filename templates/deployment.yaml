@@ -62,7 +62,7 @@ spec:
             requests:
               cpu: 100m
           env:
-{{- include "fpm.secrets" $.Values.secrets | indent 12 }}
+{{- include "fpm.secrets" (list $ . ) | indent 12 }}
             - name: TZ
               value: America/New_York
           command:
@@ -97,7 +97,7 @@ spec:
             requests:
               cpu: 10m
           env:
-{{- include "fpm.secrets" $.Values.secrets | indent 12 }}
+{{- include "fpm.secrets" (list $ . ) | indent 12 }}
             - name: DEPLOYMENT_DATE
               value: {{ now | quote }}
             - name: TZ

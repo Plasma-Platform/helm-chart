@@ -32,7 +32,7 @@ spec:
           command: ["/bin/bash", "-c"]
           args: ["{{ $worker.args }}"]
           env:
-{{- include "fpm.secrets" $.Values.secrets | indent 12 }}
+{{- include "fpm.secrets" (list $ . ) | indent 12 }}
             - name: DEPLOYMENT_DATE
               value: {{ now | quote }}
             - name: TZ

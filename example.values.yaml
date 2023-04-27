@@ -56,14 +56,9 @@ ports:
 
 onepass:
   enabled: true
-onepassitems:
+onepassitem:
   - k8s-secret-1
-
 secrets:
   - name: USER
-    secretKeyRefName: k8s-secret-1
-    secretKeyRefKey: user
   - name: TOKEN
-    secretKeyRefName: k8s-secret-1
-    secretKeyRefKey: token
 
