@@ -8,6 +8,9 @@ global:
   env: "prod"
   onepassvault: "dev"
 
+onepass:
+  enabled: false
+
 replicaCount: 1
 
 yii:
