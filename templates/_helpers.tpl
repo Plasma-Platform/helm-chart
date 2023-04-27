@@ -9,12 +9,13 @@ Please consider this when changing fpm.image here and change it in such template
 {{- end -}}
 
 {{- define "fpm.secrets" }}
-{{- range $secret := . }}
+{{- $ := index . 0 }}
+{{- range $secret := $.Values.secrets }}
 - name: {{ $secret.name }}
   valueFrom:
     secretKeyRef:
-      name: {{ $secret.secretKeyRefName }}
-      key: {{ $secret.secretKeyRefKey }}
+      name: {{ $.Values.onepassitem }}
+      key: {{ $secret.name }}
 {{- end -}}
 {{- end -}}
 
