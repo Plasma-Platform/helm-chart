@@ -38,13 +38,10 @@ spec:
             - name: TZ
               value: America/New_York
           volumeMounts:
-            - name: env
-              mountPath: /app/.env
-              subPath: env
+{{- include "fpm.volumeMounts" (list $ . ) | indent 12 }}
+
       volumes:
-        - name: env
-          configMap:
-            name: {{ $.Values.service.app }}-{{ $.Values.global.env }}
+{{- include "fpm.volumes" (list $ . ) | indent 8 }}
       restartPolicy: Always
       nodeSelector:
         {{ $.Values.nodeSelector.name }}: workers

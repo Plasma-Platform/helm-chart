@@ -37,14 +37,9 @@ spec:
                 - name: TZ
                   value: America/New_York
               volumeMounts:
-                - name: env
-                  mountPath: /app/.env
-                  subPath: env
+{{- include "fpm.volumeMounts" (list $ . ) | indent 16 }}
           volumes:
-            - name: env
-              configMap:
-                name: {{ $.Values.service.app }}-{{ $.Values.global.env }}
-          restartPolicy: Never
+{{- include "fpm.volumes" (list $ . ) | indent 12 }}
           imagePullSecrets:
             - name: {{ $.Values.image.imagePullSecrets }}
           terminationGracePeriodSeconds: 30

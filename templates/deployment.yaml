@@ -71,21 +71,14 @@ spec:
           args:
             - cd /app; {{$.Values.yii.path}} app/setup --interactive=0
           volumeMounts:
-            - name: env
-              mountPath: /app/.env
-              subPath: env
+{{- include "fpm.volumeMounts" (list $ . ) | indent 12 }}
+
       volumes:
-        - name: env
-          configMap:
-            name: {{ .Values.service.app }}-{{ .Values.global.env }}
+{{- include "fpm.volumes" (list $ . ) | indent 8 }}
+
 {{- end }}
 
       containers:
-
-{{- if .Values.memcached.enabled }}
-        - name: memcached
-          image: memcached
-{{- end }}
 
         - name: fpm
           image: {{ include "fpm.image" . }}
@@ -108,11 +101,14 @@ spec:
               protocol: TCP
 {{- end }}
           volumeMounts:
-            - name: env
-              mountPath: /app/.env
-              subPath: env
+{{- include "fpm.volumeMounts" (list $ . ) | indent 12 }}
+
+# Memcached container
+{{- if .Values.memcached.enabled }}
+        - name: memcached
+          image: memcached
+{{- end }}
+
       volumes:
-        - name: env
-          configMap:
-            name: {{ .Values.service.app }}-{{ .Values.global.env }}
+{{- include "fpm.volumes" (list $ . ) | indent 8 }}
 
