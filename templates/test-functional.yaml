@@ -21,13 +21,9 @@ spec:
       - name: test_url
         value: {{ .Values.service.app }}:8080
       volumeMounts:
-        - name: env
-          mountPath: /app/.env
-          subPath: env
+{{- include "fpm.volumeMounts" (list $ . ) | indent 8 }}
   volumes:
-    - name: env
-      configMap:
-        name: {{ .Values.service.app }}-{{ .Values.global.env }}
+{{- include "fpm.volumes" (list $ . ) | indent 4 }}
   restartPolicy: Never
   nodeSelector:
     {{ .Values.nodeSelector.name }}: {{ .Values.nodeSelector.labels }}

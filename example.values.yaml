@@ -62,3 +62,13 @@ secrets:
   - name: USER
   - name: TOKEN
 
+volumeMounts:
+  - name: private
+    mountPath: /app/private.key
+    subPath: private.key
+  - name: public
+    mountPath: /app/public.key
+    subPath: public.key
+
+
+
