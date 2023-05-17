@@ -24,6 +24,9 @@ spec:
 
     spec:
 
+      securityContext:
+        fsGroup: 33
+
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
