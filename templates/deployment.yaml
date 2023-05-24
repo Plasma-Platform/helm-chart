@@ -24,6 +24,9 @@ spec:
 
     spec:
 
+      securityContext:
+        fsGroup: {{ $.Values.securityContext.fsGroup }}
+
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
