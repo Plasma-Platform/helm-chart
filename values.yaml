@@ -4,6 +4,10 @@
 # They can be overridden by user-supplied values file, such as -f values.yaml,
 # which can in turn be overridden by --set parameters.
 
+# www-data group for mounting files from secrets, configMaps
+securityContext:
+  fsGroup: 33
+
 global:
   env: "prod"
   onepassvault: "dev"
