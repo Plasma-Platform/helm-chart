@@ -56,8 +56,7 @@ ports:
 
 onepass:
   enabled: true
-onepassitem:
-  - k8s-secret-1
+onepassitem: servicename
 secrets:
   - name: USER
   - name: TOKEN
