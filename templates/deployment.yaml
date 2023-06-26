@@ -27,6 +27,8 @@ spec:
       securityContext:
         fsGroup: {{ $.Values.securityContext.fsGroup }}
 
+      terminationGracePeriodSeconds: 120
+
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -65,7 +67,6 @@ spec:
             requests:
               cpu: 100m
           env:
-#{{- include "fpm.secrets" (list $ . ) | indent 12 }}
             - name: TZ
               value: America/New_York
           command:
@@ -86,12 +87,44 @@ spec:
         - name: fpm
           image: {{ include "fpm.image" . }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+
+          readinessProbe:
+            exec:
+              command:
+                - "curl"
+                - "--fail"
+                - "-o"
+                - "/dev/null"
+                - "http://localhost:80/api/health-check"
+            periodSeconds: 10
+            failureThreshold: 3
+            successThreshold: 1
+            timeoutSeconds: 5
+          startupProbe:
+            httpGet:
+              path: /api/health-check
+              port: 80
+            failureThreshold: 3
+            successThreshold: 1
+            periodSeconds: 10
+            timeoutSeconds: 5
+            initialDelaySeconds: 5
+
+          lifecycle:
+            postStart:
+              exec:
+                command: ["/bin/sh", "-c", "sed -i '0,/autorestart=true/{s/autorestart=true/autorestart=false/}' /etc/supervisor/conf.d/supervisor.conf"]
+            preStop:
+              exec:
+                command: ["/bin/sh","-c","nginx -s quit; while killall -0 nginx; do sleep 1; done"]
+
           resources:
             limits:
               cpu: 500m
               memory: {{ .Values.service.memorylimit | default "256Mi" | quote }}
             requests:
               cpu: 10m
+
           env:
 {{- include "fpm.secrets" (list $ . ) | indent 12 }}
             - name: DEPLOYMENT_DATE
@@ -106,11 +139,13 @@ spec:
           volumeMounts:
 {{- include "fpm.volumeMounts" (list $ . ) | indent 12 }}
 
+
 # Memcached container
 {{- if .Values.memcached.enabled }}
         - name: memcached
           image: memcached
 {{- end }}
+
 
       volumes:
 {{- include "fpm.volumes" (list $ . ) | indent 8 }}
