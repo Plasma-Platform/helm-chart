@@ -65,7 +65,7 @@ spec:
             requests:
               cpu: 100m
           env:
-##{{- include "fpm.secrets" (list $ . ) | indent 12 }}
+#{{- include "fpm.secrets" (list $ . ) | indent 12 }}
             - name: TZ
               value: America/New_York
           command:
@@ -74,9 +74,10 @@ spec:
           args:
             - cd /app; {{$.Values.yii.path}} app/setup --interactive=0
           volumeMounts:
-##{{- include "fpm.volumeMounts" (list $ . ) | indent 12 }}
-##      volumes:
-##{{- include "fpm.volumes" (list $ . ) | indent 8 }}
+{{- include "fpm.volumeMounts" (list $ . ) | indent 12 }}
+
+      volumes:
+{{- include "fpm.volumes" (list $ . ) | indent 8 }}
 
 {{- end }}
 
