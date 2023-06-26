@@ -26,6 +26,9 @@ ingress:
 migrate:
   enabled: enabled
 
+healthcheck:
+  enabled: enabled
+
 phptests:
   enabled: enabled
 
