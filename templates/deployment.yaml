@@ -88,6 +88,7 @@ spec:
           image: {{ include "fpm.image" . }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
 
+{{- if .Values.healthcheck.enabled }}
           readinessProbe:
             exec:
               command:
@@ -109,6 +110,7 @@ spec:
             periodSeconds: 10
             timeoutSeconds: 5
             initialDelaySeconds: 5
+{{- end }}
 
           lifecycle:
             postStart:
