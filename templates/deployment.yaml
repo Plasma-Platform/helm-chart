@@ -77,8 +77,9 @@ spec:
             - cd /app; {{$.Values.yii.path}} app/setup --interactive=0
           volumeMounts:
 {{- include "fpm.volumeMounts" (list $ . ) | indent 12 }}
-#      volumes:
-#{{- include "fpm.volumes" (list $ . ) | indent 8 }}
+
+      volumes:
+{{- include "fpm.volumes" (list $ . ) | indent 8 }}
 
 {{- end }}
 
