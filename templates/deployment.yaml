@@ -67,6 +67,7 @@ spec:
             requests:
               cpu: 100m
           env:
+{{- include "fpm.secrets" (list $ . ) | indent 12 }}
             - name: TZ
               value: America/New_York
           command:
