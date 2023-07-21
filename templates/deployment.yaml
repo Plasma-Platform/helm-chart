@@ -89,6 +89,8 @@ spec:
           image: {{ include "fpm.image" . }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
 
+{{- if .Values.probes.enabled }}
+
           readinessProbe:
             exec:
               command:
@@ -118,6 +120,7 @@ spec:
             preStop:
               exec:
                 command: ["/bin/sh","-c","nginx -s quit; while killall -0 nginx; do sleep 1; done"]
+{{- end }}
 
           resources:
             limits:

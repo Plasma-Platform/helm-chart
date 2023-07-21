@@ -12,6 +12,9 @@ global:
   env: "prod"
   onepassvault: "dev"
 
+probes:
+  enabled: true
+
 onepass:
   enabled: false
 
