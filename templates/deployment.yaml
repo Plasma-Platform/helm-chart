@@ -85,6 +85,12 @@ spec:
 
       containers:
 
+# Memcached container
+{{- if .Values.memcached.enabled }}
+        - name: memcached
+          image: memcached
+{{- end }}
+
         - name: fpm
           image: {{ include "fpm.image" . }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
@@ -143,12 +149,6 @@ spec:
           volumeMounts:
 {{- include "fpm.volumeMounts" (list $ . ) | indent 12 }}
 
-
-# Memcached container
-{{- if .Values.memcached.enabled }}
-        - name: memcached
-          image: memcached
-{{- end }}
 
 
       volumes:
