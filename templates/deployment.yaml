@@ -127,9 +127,10 @@ spec:
           resources:
             limits:
               cpu: 500m
-              memory: {{ .Values.service.memorylimit | default "256Mi" | quote }}
+              memory: {{ .Values.service.memorylimit | default "256Mi" }}
             requests:
               cpu: 10m
+              memory: 64Mi
 
           env:
 {{- include "fpm.secrets" (list $ . ) | indent 12 }}
@@ -149,6 +150,13 @@ spec:
 {{- if .Values.memcached.enabled }}
         - name: memcached
           image: memcached
+          resources:
+            limits:
+              cpu: 100m
+              memory: {{ .Values.memcached.memorylimit | default "32Mi" }}
+            requests:
+              cpu: 10m
+              memory: 16Mi
 {{- end }}
 
 
