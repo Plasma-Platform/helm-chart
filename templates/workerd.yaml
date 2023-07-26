@@ -27,8 +27,10 @@ spec:
           resources:
             limits:
               cpu: 500m
+              memory: {{ $worker.memorylimit | default "256Mi" }}
             requests:
               cpu: 10m
+              memory: 32Mi
           command: ["/bin/bash", "-c"]
           args: ["{{ $worker.args }}"]
           env:
