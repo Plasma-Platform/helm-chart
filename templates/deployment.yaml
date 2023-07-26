@@ -89,6 +89,8 @@ spec:
           image: {{ include "fpm.image" . }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
 
+{{- if .Values.probes.enabled }}
+
           readinessProbe:
             exec:
               command:
@@ -101,6 +103,7 @@ spec:
             failureThreshold: 3
             successThreshold: 1
             timeoutSeconds: 5
+{{- if .Values.startup_probe.enabled }}
           startupProbe:
             httpGet:
               path: /api/health-check
@@ -110,6 +113,7 @@ spec:
             periodSeconds: 10
             timeoutSeconds: 5
             initialDelaySeconds: 5
+{{- end }}
 
           lifecycle:
             postStart:
@@ -118,6 +122,7 @@ spec:
             preStop:
               exec:
                 command: ["/bin/sh","-c","nginx -s quit; while killall -0 nginx; do sleep 1; done"]
+{{- end }}
 
           resources:
             limits:
@@ -140,12 +145,12 @@ spec:
           volumeMounts:
 {{- include "fpm.volumeMounts" (list $ . ) | indent 12 }}
 
-
 # Memcached container
 {{- if .Values.memcached.enabled }}
         - name: memcached
           image: memcached
 {{- end }}
+
 
 
       volumes:
