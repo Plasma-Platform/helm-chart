@@ -74,7 +74,7 @@ spec:
             - /bin/bash
             - '-c'
           args:
-            - cd /app; {{$.Values.yii.path}} app/setup --interactive=0
+            - cd /app; php {{$.Values.yii.path}} app/setup --interactive=0
           volumeMounts:
 {{- include "fpm.volumeMounts" (list $ . ) | indent 12 }}
 
