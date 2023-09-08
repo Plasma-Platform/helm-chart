@@ -1,4 +1,4 @@
-{{- range $cron := $.Values.cronjobs }}
+{{- range $cron := $.Values.cron }}
 
 ---
 
