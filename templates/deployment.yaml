@@ -74,7 +74,7 @@ spec:
             - /bin/bash
             - '-c'
           args:
-            - cd /app; {{$.Values.yii.path}} app/setup --interactive=0
+            - cd /app; php {{$.Values.yii.path}} app/setup --interactive=0
           volumeMounts:
 {{- include "fpm.volumeMounts" (list $ . ) | indent 12 }}
 
@@ -110,9 +110,9 @@ spec:
               port: 80
             failureThreshold: 3
             successThreshold: 1
-            periodSeconds: 10
-            timeoutSeconds: 5
-            initialDelaySeconds: 5
+            periodSeconds: 15
+            timeoutSeconds: 3
+            initialDelaySeconds: 1
 {{- end }}
 
           lifecycle:
