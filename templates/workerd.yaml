@@ -6,22 +6,22 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: {{ $.Values.service.app }}-{{ $worker.name }}
-  name: {{ $.Values.service.app }}-{{ $worker.name }}
+    app: {{ $.Values.service.app }}-worker-{{ $worker.name }}
+  name: {{ $.Values.service.app }}-worker-{{ $worker.name }}
 spec:
   replicas: {{ $worker.replicaCount }}
   selector:
     matchLabels:
-      app: {{ $.Values.service.app }}-{{ $worker.name }}
+      app: {{ $.Values.service.app }}-worker-{{ $worker.name }}
   template:
     metadata:
       labels:
-        app: {{ $.Values.service.app }}-{{ $worker.name }}
+        app: {{ $.Values.service.app }}-worker-{{ $worker.name }}
       annotations:
         rollme: {{ randAlphaNum 5 | quote }}
     spec:
       containers:
-        - name: {{ $.Values.service.app }}-{{ $worker.name }}
+        - name: {{ $.Values.service.app }}-worker-{{ $worker.name }}
           image: "{{ $.Values.image.registryfullpath }}/fpm:{{ $.Values.image.tag }}"
           imagePullPolicy: {{ $.Values.image.pullPolicy }}
           resources:
@@ -30,7 +30,7 @@ spec:
               memory: {{ $worker.memorylimit | default "256Mi" }}
             requests:
               cpu: 10m
-              memory: 32Mi
+              memory: 16Mi
           command: ["/bin/bash", "-c"]
           args: ["{{ $worker.args }}"]
           env:
