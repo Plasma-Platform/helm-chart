@@ -9,7 +9,6 @@ metadata:
       location = /robots.txt { add_header Content-Type text/plain; return 200 'User-agent: *\nDisallow: /\n'; }
     cert-manager.io/cluster-issuer: "letsencrypt-prod"  
     nginx.ingress.kubernetes.io/connection-proxy-header: close
-    nginx.ingress.kubernetes.io/proxy-body-size: 200m
     nginx.ingress.kubernetes.io/server-alias: {{ .Values.authback.host }}
 spec:
   ingressClassName: nginx
