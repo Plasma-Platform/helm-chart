@@ -15,7 +15,7 @@ global:
 onepass:
   enabled: false
 
-replicaCount: 1
+replicaCount: 2
 
 yii:
   path: 'console/yii'
