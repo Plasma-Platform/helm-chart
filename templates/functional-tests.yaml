@@ -2,12 +2,12 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: "{{ .Release.Name }}-zfunctional"
+  name: "{{ .Release.Name }}-functional"
   annotations:
     "helm.sh/hook": "test-success"
 spec:
   containers:
-    - name: zfunctional
+    - name: functional
       image: {{ include "fpm.image" . }}
       imagePullPolicy: {{ .Values.image.pullPolicy }}
       resources:
