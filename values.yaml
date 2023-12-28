@@ -37,8 +37,8 @@ healthcheck:
 phptests:
   enabled: true
 
-#selenium:
-#  enabled: false
+selenium:
+  enabled: false
 
 memcached:
   enabled: enabled
