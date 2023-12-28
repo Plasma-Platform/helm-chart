@@ -172,11 +172,11 @@ spec:
               memory: 512Mi
           env:
             - name: SE_NODE_MAX_SESSIONS
-              value: 10
+              value: '10'
             - name: SE_NODE_SESSION_TIMEOUT
-              value: 100
+              value: '100'
             - name: SE_NODE_OVERRIDE_MAX_SESSIONS
-              value: true
+              value: 'true'
           ports:
             - containerPort: 4444
               protocol: TCP
