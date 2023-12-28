@@ -35,7 +35,7 @@ healthcheck:
   enabled: enabled
 
 phptests:
-  enabled: false
+  enabled: true
 
 selenium:
   enabled: false
