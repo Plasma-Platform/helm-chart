@@ -36,6 +36,10 @@ healthcheck:
 
 phptests:
   enabled: true
+unittest:
+  enabled: true
+functionaltest:
+  enabled: true
 
 selenium:
   enabled: false

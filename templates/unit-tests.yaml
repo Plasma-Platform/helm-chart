@@ -1,4 +1,5 @@
 {{- if .Values.phptests.enabled }}
+{{- if .Values.unittest.enabled }}
 apiVersion: v1
 kind: Pod
 metadata:
@@ -30,4 +31,5 @@ spec:
   imagePullSecrets:
     - name: {{ .Values.image.imagePullSecrets }}
 
+{{- end -}}
 {{- end -}}
