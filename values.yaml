@@ -40,6 +40,8 @@ unittest:
   enabled: true
 functionaltest:
   enabled: true
+acceptancetest:
+  enabled: false
 
 selenium:
   enabled: false

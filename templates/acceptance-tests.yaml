@@ -1,0 +1,37 @@
+{{- if .Values.phptests.enabled }}
+{{- if .Values.acceptancetest.enabled }}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ .Release.Name }}-acceptance"
+  annotations:
+    "helm.sh/hook": "test-success"
+spec:
+  containers:
+    - name: functional
+      image: {{ include "fpm.image" . }}
+      imagePullPolicy: {{ .Values.image.pullPolicy }}
+      resources:
+        limits:
+          cpu: 500m
+        requests:
+          cpu: 10m
+      command: ["/bin/bash", "-c"]
+      args: ["cd /app/; /bin/bash ./acceptance.sh]
+      env:
+      - name: selenium_host
+        value: {{ .Values.service.app }}
+      - name: selenium_port
+        value: '4444'
+      volumeMounts:
+{{- include "fpm.volumeMounts" (list $ . ) | indent 8 }}
+  volumes:
+{{- include "fpm.volumes" (list $ . ) | indent 4 }}
+  restartPolicy: Never
+  nodeSelector:
+    {{ .Values.nodeSelector.name }}: {{ .Values.nodeSelector.labels }}
+  imagePullSecrets:
+    - name: {{ .Values.image.imagePullSecrets }}
+
+{{- end -}}
+{{- end -}}
