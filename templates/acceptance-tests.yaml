@@ -7,7 +7,7 @@ metadata:
     "helm.sh/hook": "test-success"
 spec:
   containers:
-    - name: functional
+    - name: acceptance
       image: {{ include "fpm.image" . }}
       imagePullPolicy: {{ .Values.image.pullPolicy }}
       resources:
@@ -18,6 +18,8 @@ spec:
       command: ["/bin/bash", "-c"]
       args: ["cd /app/; /bin/bash ./acceptance.sh"]
       env:
+        - name: test_url
+          value: {{ .Values.service.app }}:8080
         - name: selenium_host
           value: {{ .Values.service.app }}
         - name: selenium_port
