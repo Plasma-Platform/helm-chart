@@ -16,12 +16,12 @@ spec:
         requests:
           cpu: 10m
       command: ["/bin/bash", "-c"]
-      args: ["cd /app/; /bin/bash ./acceptance.sh]
+      args: ["cd /app/; /bin/bash ./acceptance.sh"]
       env:
-      - name: selenium_host
-        value: {{ .Values.service.app }}
-      - name: selenium_port
-        value: '4444'
+        - name: selenium_host
+          value: {{ .Values.service.app }}
+        - name: selenium_port
+          value: '4444'
       volumeMounts:
 {{- include "fpm.volumeMounts" (list $ . ) | indent 8 }}
   volumes:
