@@ -35,7 +35,10 @@ healthcheck:
   enabled: enabled
 
 phptests:
-  enabled: enabled
+  enabled: false
+
+selenium:
+  enabled: false
 
 memcached:
   enabled: enabled
