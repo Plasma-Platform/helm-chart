@@ -1,4 +1,3 @@
-{{- if .Values.phptests.enabled }}
 {{- if .Values.acceptancetest.enabled }}
 apiVersion: v1
 kind: Pod
@@ -33,5 +32,4 @@ spec:
   imagePullSecrets:
     - name: {{ .Values.image.imagePullSecrets }}
 
-{{- end -}}
 {{- end -}}
