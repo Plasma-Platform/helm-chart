@@ -159,6 +159,31 @@ spec:
               memory: 16Mi
 {{- end }}
 
+# Selenium container for tests
+{{- if .Values.selenium.enabled }}
+        - name: selenium
+          image: selenium/standalone-chrome:latest
+          resources:
+            limits:
+              cpu: 100m
+              memory: 2G
+            requests:
+              cpu: 10m
+              memory: 512Mi
+          env:
+            - name: SE_NODE_MAX_SESSIONS
+              value: 10
+            - name: SE_NODE_SESSION_TIMEOUT
+              value: 100
+            - name: SE_NODE_OVERRIDE_MAX_SESSIONS
+              value: true
+          ports:
+            - containerPort: 4444
+              protocol: TCP
+            - containerPort: 7900
+              protocol: TCP
+{{- end }}
+
 
 
       volumes:
