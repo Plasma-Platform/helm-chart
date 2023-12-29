@@ -15,8 +15,8 @@ spec:
           cpu: 500m
         requests:
           cpu: 10m
-#      command: ["/bin/bash", "-c"]
-#      args: ["cd /app/; /bin/bash ./acceptance.sh"]
+      command: ["/bin/bash", "-c"]
+      args: ["cd /app/; /bin/bash ./acceptance.sh"]
       env:
         - name: test_url
           value: {{ .Values.service.app }}:8080
