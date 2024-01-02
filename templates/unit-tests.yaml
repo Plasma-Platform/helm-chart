@@ -8,23 +8,32 @@ metadata:
     "helm.sh/hook": "test-success"
 spec:
   containers:
+
     - name: functional
       image: {{ include "fpm.image" . }}
       imagePullPolicy: {{ .Values.image.pullPolicy }}
+
       resources:
         limits:
           cpu: 500m
+          memory: 512Mi
         requests:
           cpu: 10m
+          memory: 64Mi
+
       command: ["/bin/bash", "-c"]
       args: ["cd /app/; /bin/bash ./unit.sh --coverage-text --no-colors"]
+
       env:
       - name: test_url
         value: {{ .Values.service.app }}:8080
+
       volumeMounts:
 {{- include "fpm.volumeMounts" (list $ . ) | indent 8 }}
+
   volumes:
 {{- include "fpm.volumes" (list $ . ) | indent 4 }}
+
   restartPolicy: Never
   nodeSelector:
     {{ .Values.nodeSelector.name }}: {{ .Values.nodeSelector.labels }}
