@@ -19,7 +19,7 @@ spec:
           memory: 512Mi
         requests:
           cpu: 10m
-          memory: 64Mi
+          memory: 256Mi
 
       command: ["/bin/bash", "-c"]
       args: ["cd /app/; /bin/bash ./unit.sh --coverage-text --no-colors"]
