@@ -28,9 +28,12 @@ spec:
 {{- include "fpm.volumeMounts" (list $ . ) | indent 8 }}
   volumes:
 {{- include "fpm.volumes" (list $ . ) | indent 4 }}
+
   restartPolicy: Never
-  nodeSelector:
-    {{ .Values.nodeSelector.name }}: {{ .Values.nodeSelector.labels }}
+
+      nodeSelector:
+        {{ $.Values.nodeSelector.name }}: applications
+
   imagePullSecrets:
     - name: {{ .Values.image.imagePullSecrets }}
 
