@@ -12,6 +12,7 @@ spec:
       imagePullPolicy: {{ .Values.image.pullPolicy }}
       resources:
         limits:
+          memory: 2048Mi
           cpu: 500m
         requests:
           cpu: 10m
@@ -31,8 +32,8 @@ spec:
 
   restartPolicy: Never
 
-      nodeSelector:
-        {{ $.Values.nodeSelector.name }}: applications
+  nodeSelector:
+    {{ $.Values.nodeSelector.name }}: applications
 
   imagePullSecrets:
     - name: {{ .Values.image.imagePullSecrets }}
