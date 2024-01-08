@@ -1,4 +1,5 @@
 {{- if .Values.phptests.enabled }}
+{{- if .Values.unittest.enabled }}
 apiVersion: v1
 kind: Pod
 metadata:
@@ -7,27 +8,35 @@ metadata:
     "helm.sh/hook": "test-success"
 spec:
   containers:
+
     - name: functional
       image: {{ include "fpm.image" . }}
       imagePullPolicy: {{ .Values.image.pullPolicy }}
+
       resources:
         limits:
           cpu: 500m
         requests:
           cpu: 10m
+
       command: ["/bin/bash", "-c"]
       args: ["cd /app/; /bin/bash ./unit.sh --coverage-text --no-colors"]
+
       env:
       - name: test_url
         value: {{ .Values.service.app }}:8080
+
       volumeMounts:
 {{- include "fpm.volumeMounts" (list $ . ) | indent 8 }}
+
   volumes:
 {{- include "fpm.volumes" (list $ . ) | indent 4 }}
+
   restartPolicy: Never
   nodeSelector:
     {{ .Values.nodeSelector.name }}: {{ .Values.nodeSelector.labels }}
   imagePullSecrets:
     - name: {{ .Values.image.imagePullSecrets }}
 
+{{- end -}}
 {{- end -}}

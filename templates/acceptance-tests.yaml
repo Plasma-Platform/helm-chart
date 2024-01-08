@@ -1,35 +1,41 @@
-{{- if .Values.phptests.enabled }}
-{{- if .Values.functionaltest.enabled }}
+{{- if .Values.acceptancetest.enabled }}
 apiVersion: v1
 kind: Pod
 metadata:
-  name: "{{ .Release.Name }}-functional"
+  name: "{{ .Release.Name }}-acceptance"
   annotations:
     "helm.sh/hook": "test-success"
 spec:
   containers:
-    - name: functional
+    - name: acceptance
       image: {{ include "fpm.image" . }}
       imagePullPolicy: {{ .Values.image.pullPolicy }}
       resources:
         limits:
+          memory: 2048Mi
           cpu: 500m
         requests:
           cpu: 10m
       command: ["/bin/bash", "-c"]
-      args: ["cd /app/; /bin/bash ./functional.sh"]
+      args: ["cd /app/; /bin/bash ./acceptance.sh"]
       env:
-      - name: test_url
-        value: {{ .Values.service.app }}:8080
+        - name: test_url
+          value: {{ .Values.service.app }}:8080
+        - name: selenium_host
+          value: {{ .Values.service.app }}
+        - name: selenium_port
+          value: '4444'
       volumeMounts:
 {{- include "fpm.volumeMounts" (list $ . ) | indent 8 }}
   volumes:
 {{- include "fpm.volumes" (list $ . ) | indent 4 }}
+
   restartPolicy: Never
+
   nodeSelector:
-    {{ .Values.nodeSelector.name }}: {{ .Values.nodeSelector.labels }}
+    {{ $.Values.nodeSelector.name }}: applications
+
   imagePullSecrets:
     - name: {{ .Values.image.imagePullSecrets }}
 
-{{- end -}}
 {{- end -}}

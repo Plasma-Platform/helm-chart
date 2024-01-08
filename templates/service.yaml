@@ -15,3 +15,12 @@ spec:
     protocol: TCP
     port: 11211
 
+{{- if .Values.selenium.enabled }}
+  - name: selenium
+    protocol: TCP
+    port: 4444
+  - name: selenium2
+    protocol: TCP
+    port: 7900
+{{- end }}
+

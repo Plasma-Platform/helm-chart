@@ -23,7 +23,7 @@ Please consider this when changing fpm.image here and change it in such template
 {{- $ := index . 0 }}
 - name: env
   configMap:
-    name: {{ $.Values.service.app }}-{{ $.Values.global.env }}
+    name: {{ $.Values.service.app }}
 {{- range $volume := $.Values.volumeMounts }}
 - name: {{ $volume.name }}
   secret:
