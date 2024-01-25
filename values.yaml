@@ -46,6 +46,9 @@ acceptancetest:
 selenium:
   enabled: false
 
+cypresstest:
+  enabled: false
+
 memcached:
   enabled: enabled
 
