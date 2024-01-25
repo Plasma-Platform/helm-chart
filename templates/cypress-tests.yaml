@@ -1,0 +1,29 @@
+{{- if .Values.cypresstest.enabled }}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ .Release.Name }}-acceptance"
+  annotations:
+    "helm.sh/hook": "test-success"
+spec:
+  containers:
+    - name: cypress
+      image: {{ $.Values.image.registryfullpath }}/cypress:{{ $.Values.image.tag }}
+      imagePullPolicy: {{ .Values.image.pullPolicy }}
+      resources:
+        limits:
+          cpu: 500m
+        requests:
+          cpu: 10m
+      command: ["/bin/bash", "-c"]
+      args: ["PATH=$PATH:/app/node_modules/cypress/bin/ npm run test"]
+
+  restartPolicy: Never
+
+  nodeSelector:
+    {{ $.Values.nodeSelector.name }}: applications
+
+  imagePullSecrets:
+    - name: {{ .Values.image.imagePullSecrets }}
+
+{{- end -}}
