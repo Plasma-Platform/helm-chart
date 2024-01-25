@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: "{{ .Release.Name }}-acceptance"
+  name: "{{ .Release.Name }}-cypress"
   annotations:
     "helm.sh/hook": "test-success"
 spec:
