@@ -17,7 +17,7 @@ spec:
         requests:
           cpu: 10m
       command: ["/bin/bash", "-c"]
-      args: ["PATH=$PATH:/app/node_modules/cypress/bin/ npm run test"]
+      args: ["PATH=$PATH:/app/node_modules/cypress/bin/ npm run test --headless --browser chrome"]
 
   restartPolicy: Never
 
