@@ -11,7 +11,7 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-body-size: 200m
     nginx.ingress.kubernetes.io/proxy-buffer-size: 256k
     nginx.ingress.kubernetes.io/server-alias: {{ .Values.authback.host }}
-    nginx.ingress.kubernetes.io/whitelist-source-range: {{ .Values.authback.whitelist | default 0.0.0.0/0 }}
+    nginx.ingress.kubernetes.io/whitelist-source-range: {{ .Values.authback.whitelist | default "0.0.0.0/0" }}
 spec:
   ingressClassName: nginx
   defaultBackend:
