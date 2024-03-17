@@ -21,6 +21,8 @@ spec:
       env:
       - name: test_url
         value: {{ .Values.service.app }}:8080
+      - name: TEST_URL
+        value: {{ .Values.service.app }}:8080
       volumeMounts:
 {{- include "fpm.volumeMounts" (list $ . ) | indent 8 }}
   volumes:
