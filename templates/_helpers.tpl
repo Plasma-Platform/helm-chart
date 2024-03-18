@@ -44,3 +44,19 @@ Please consider this when changing fpm.image here and change it in such template
   subPath: {{ $volume.subPath }} 
 {{- end -}}
 {{- end -}}
+
+#{{- define "worker.volumeMounts" }}
+#{{- $ := index . 0 }}
+#- name: env
+#  mountPath: /app/.env
+#  subPath: env
+#{{- range $volume := $.worker.volumeMounts }}
+#- name: {{ $volume.name }}
+#  readOnly: true
+#  mountPath: {{ $volume.mountPath }}
+#  subPath: {{ $volume.subPath }} 
+#{{- end -}}
+#{{- end -}}
+
+
+

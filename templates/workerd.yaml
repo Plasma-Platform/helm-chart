@@ -52,7 +52,16 @@ spec:
 
 
       volumes:
-{{- include "fpm.volumes" (list $ . ) | indent 8 }}
+        - name: env
+          configMap:
+            name: {{ $.Values.service.app }}
+{{- range $volume := $.Values.volumeMounts }}
+        - name: {{ $volume.name }}
+          secret:
+            secretName: {{ $.Values.onepassitem }}
+            defaultMode: 432
+{{- end }}
+
 
 
       restartPolicy: Always
