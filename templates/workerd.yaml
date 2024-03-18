@@ -40,10 +40,21 @@ spec:
             - name: TZ
               value: America/New_York
           volumeMounts:
-{{- include "fpm.volumeMounts" (list $ . ) | indent 12 }}
+            - name: env
+              mountPath: /app/.env
+              subPath: env
+{{- range $volume := $worker.volumeMounts }}
+            - name: {{ $volume.name }}
+              readOnly: true
+              mountPath: {{ $volume.mountPath }}
+              subPath: {{ $volume.subPath }}
+{{- end }}
+
 
       volumes:
 {{- include "fpm.volumes" (list $ . ) | indent 8 }}
+
+
       restartPolicy: Always
       nodeSelector:
         {{ $.Values.nodeSelector.name }}: workers
