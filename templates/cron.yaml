@@ -19,6 +19,9 @@ spec:
       template:
         spec:
           restartPolicy: Never
+          imagePullSecrets:
+            - name: {{ $.Values.image.imagePullSecrets }}
+          terminationGracePeriodSeconds: 30
           containers:
             - name: {{ $.Values.service.app }}-{{ $cron.name }}
               image: "{{ $.Values.image.registryfullpath }}/fpm:{{ $.Values.image.tag }}"
@@ -32,17 +35,42 @@ spec:
               args: ["{{ $cron.args }}"]
               env:
 {{- include "fpm.secrets" (list $ . ) | indent 16 }}
-                - name: DEPLOYMENT_DATE
-                  value: {{ now | quote }}
-                - name: TZ
-                  value: America/New_York
-              volumeMounts:
-{{- include "fpm.volumeMounts" (list $ . ) | indent 16 }}
-          volumes:
-{{- include "fpm.volumes" (list $ . ) | indent 12 }}
-          imagePullSecrets:
-            - name: {{ $.Values.image.imagePullSecrets }}
-          terminationGracePeriodSeconds: 30
-    
+{{- range $secret := $cron.secrets }}
+            - name: {{ $secret.name }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $.Values.onepassitem }}
+                  key: {{ $secret.name }}
+{{- end }}
+            - name: DEPLOYMENT_DATE
+              value: {{ now | quote }}
+            - name: TZ
+              value: America/New_York
+          volumeMounts:
+            - name: env
+              mountPath: /app/.env
+              subPath: env
+{{- range $volume := $cron.volumeMounts }}
+            - name: {{ $volume.name }}
+              readOnly: true
+              mountPath: {{ $volume.mountPath }}
+              subPath: {{ $volume.subPath }}
+{{- end }}
+
+      volumes:
+        - name: env
+          configMap:
+            name: {{ $.Values.service.app }}
+{{- range $volume := $cron.volumeMounts }}
+        - name: {{ $volume.name }}
+          secret:
+            secretName: {{ $.Values.onepassitem }}
+            defaultMode: 432
+{{- end }}
+
+
+
+
+
 {{- end }}
 
