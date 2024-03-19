@@ -46,9 +46,11 @@ ports:
 #    args: "cd /app; console/yii queue/listen"
 #    replicaCount: 1
 #    VolumeMounts:
-#      -name: volume1
+#      - name: volume1
 #       mountPath: /mount/file1.txt
 #       subPath: file1.txt
+#    secrets:
+#      - name: USER
 
 #cron:
 #  - name: "cc-dd"
@@ -57,6 +59,12 @@ ports:
 #  - name: "ee-ff"
 #    args: "cd app; php console/yii worker/ee-ff 4 '-30 minutes'"
 #    schedule: "*/30 * * * *"
+#    VolumeMounts:
+#      - name: volume1
+#        mountPath: /mount/file1.txt
+#        subPath: file1.txt
+#    secrets:
+#      - name: USER
 
 onepass:
   enabled: true
