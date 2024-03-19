@@ -35,15 +35,42 @@ spec:
           args: ["{{ $worker.args }}"]
           env:
 {{- include "fpm.secrets" (list $ . ) | indent 12 }}
+{{- range $secret := $worker.secrets }}
+            - name: {{ $secret.name }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $.Values.onepassitem }}
+                  key: {{ $secret.name }}
+{{- end }}
             - name: DEPLOYMENT_DATE
               value: {{ now | quote }}
             - name: TZ
               value: America/New_York
           volumeMounts:
-{{- include "fpm.volumeMounts" (list $ . ) | indent 12 }}
+            - name: env
+              mountPath: /app/.env
+              subPath: env
+{{- range $volume := $worker.volumeMounts }}
+            - name: {{ $volume.name }}
+              readOnly: true
+              mountPath: {{ $volume.mountPath }}
+              subPath: {{ $volume.subPath }}
+{{- end }}
+
 
       volumes:
-{{- include "fpm.volumes" (list $ . ) | indent 8 }}
+        - name: env
+          configMap:
+            name: {{ $.Values.service.app }}
+{{- range $volume := $worker.volumeMounts }}
+        - name: {{ $volume.name }}
+          secret:
+            secretName: {{ $.Values.onepassitem }}
+            defaultMode: 432
+{{- end }}
+
+
+
       restartPolicy: Always
       nodeSelector:
         {{ $.Values.nodeSelector.name }}: workers

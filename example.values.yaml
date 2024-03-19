@@ -39,12 +39,16 @@ ports:
 #  host: authback-example-project.yourdomain.com
 
 #workers:
-#  - name: "rabbit-worker-aa"
+#  - name: "queue-aa"
 #    args: "cd /app; console/yii aa/listen"
 #    replicaCount: 1
-#  - name: "rabbit-worker-bb"
-#    args: "cd /app; console/yii delivery-default-worker-queue/listen"
+#  - name: "queue-bb"
+#    args: "cd /app; console/yii queue/listen"
 #    replicaCount: 1
+#    VolumeMounts:
+#      -name: volume1
+#       mountPath: /mount/file1.txt
+#       subPath: file1.txt
 
 #cron:
 #  - name: "cc-dd"
