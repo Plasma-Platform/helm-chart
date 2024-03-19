@@ -34,43 +34,43 @@ spec:
               command: ["/bin/bash", "-c"]
               args: ["{{ $cron.args }}"]
               env:
-{{- include "fpm.secrets" (list $ . ) | indent 16 }}
-{{- range $secret := $cron.secrets }}
-            - name: {{ $secret.name }}
-              valueFrom:
-                secretKeyRef:
-                  name: {{ $.Values.onepassitem }}
-                  key: {{ $secret.name }}
-{{- end }}
-            - name: DEPLOYMENT_DATE
-              value: {{ now | quote }}
-            - name: TZ
-              value: America/New_York
-          volumeMounts:
+                - name: DEPLOYMENT_DATE
+                  value: {{ now | quote }}
+                - name: TZ
+                  value: America/New_York
+    {{- include "fpm.secrets" (list $ . ) | indent 16 }}
+    {{- range $secret := $cron.secrets }}
+                - name: {{ $secret.name }}
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ $.Values.onepassitem }}
+                      key: {{ $secret.name }}
+    {{- end }}
+              volumeMounts:
+                - name: env
+                  mountPath: /app/.env
+                  subPath: env
+    {{- range $volume := $cron.volumeMounts }}
+                - name: {{ $volume.name }}
+                  readOnly: true
+                  mountPath: {{ $volume.mountPath }}
+                  subPath: {{ $volume.subPath }}
+    {{- end }}
+    
+          volumes:
             - name: env
-              mountPath: /app/.env
-              subPath: env
-{{- range $volume := $cron.volumeMounts }}
+              configMap:
+                name: {{ $.Values.service.app }}
+    {{- range $volume := $cron.volumeMounts }}
             - name: {{ $volume.name }}
-              readOnly: true
-              mountPath: {{ $volume.mountPath }}
-              subPath: {{ $volume.subPath }}
+              secret:
+                secretName: {{ $.Values.onepassitem }}
+                defaultMode: 432
+    {{- end }}
+    
+    
+    
+    
+    
 {{- end }}
-
-      volumes:
-        - name: env
-          configMap:
-            name: {{ $.Values.service.app }}
-{{- range $volume := $cron.volumeMounts }}
-        - name: {{ $volume.name }}
-          secret:
-            secretName: {{ $.Values.onepassitem }}
-            defaultMode: 432
-{{- end }}
-
-
-
-
-
-{{- end }}
-
+    
