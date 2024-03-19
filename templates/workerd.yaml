@@ -35,6 +35,13 @@ spec:
           args: ["{{ $worker.args }}"]
           env:
 {{- include "fpm.secrets" (list $ . ) | indent 12 }}
+{{- range $secret := $worker.secrets }}
+            - name: {{ $secret.name }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $.Values.onepassitem }}
+                  key: {{ $secret.name }}
+{{- end -}}
             - name: DEPLOYMENT_DATE
               value: {{ now | quote }}
             - name: TZ
