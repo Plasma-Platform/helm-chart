@@ -48,6 +48,8 @@ selenium:
 
 memcached:
   enabled: enabled
+  memorylimitApplication: 28
+  memorylimitContainer: 32
 
 image:
   tag: prod
