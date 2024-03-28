@@ -22,6 +22,11 @@ onepass:
 
 replicaCount: 2
 
+memcached:
+  enabled: enabled
+  memorylimitApplication: 28
+  memorylimitContainer: 32Mi
+
 yii:
   path: 'console/yii'
 
@@ -45,11 +50,6 @@ acceptancetest:
 
 selenium:
   enabled: false
-
-memcached:
-  enabled: enabled
-  memorylimitApplication: 28
-  memorylimitContainer: 32
 
 image:
   tag: prod
