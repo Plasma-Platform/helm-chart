@@ -156,11 +156,11 @@ spec:
             - /bin/bash
             - -c
             - --
-            - memcached --memory-limit={{ .Values.memcached.memorylimitApplication | default "28" }}
+            - memcached --memory-limit={{ .Values.memcached.memorylimitApplication | default "64" }}
           resources:
             limits:
               cpu: 100m
-              memory: {{ .Values.memcached.memorylimitContainer | default "32Mi" }}
+              memory: {{ .Values.memcached.memorylimitContainer | default "72Mi" }}
             requests:
               cpu: 10m
               memory: 16Mi
