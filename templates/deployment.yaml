@@ -152,11 +152,11 @@ spec:
 {{- if .Values.memcached.enabled }}
         - name: memcached
           image: memcached
-          command:
-            - /bin/bash
-            - -c
-            - --
-            - memcached --memory-limit={{ .Values.memcached.memorylimitApplication | default "64" }}
+#          command:
+#            - /bin/bash
+#            - -c
+#            - --
+#            - memcached --memory-limit={{ .Values.memcached.memorylimitApplication | default "64" }}
           resources:
             limits:
               cpu: 100m

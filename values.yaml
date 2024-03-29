@@ -24,8 +24,8 @@ replicaCount: 2
 
 memcached:
   enabled: enabled
-  memorylimitApplication: 28
-  memorylimitContainer: 32Mi
+#  memorylimitApplication: 28
+#  memorylimitContainer: 32Mi
 
 yii:
   path: 'console/yii'
