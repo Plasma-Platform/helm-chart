@@ -8,6 +8,12 @@ metadata:
   labels:
     app: {{ $.Values.service.app }}-worker-{{ $worker.name }}
   name: {{ $.Values.service.app }}-worker-{{ $worker.name }}
+  annotations:
+{{- if .Values.onepass.enabled }}
+    operator.1password.io/auto-restart: "true"
+    operator.1password.io/item-path: "vaults/{{ .Values.global.onepassvault }}/items/{{ .Values.onepassitem }}"
+    operator.1password.io/item-name: "{{ .Values.onepassitem }}"
+{{- end }}
 spec:
   replicas: {{ $worker.replicaCount }}
   selector:
