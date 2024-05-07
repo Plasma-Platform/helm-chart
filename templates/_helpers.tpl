@@ -8,7 +8,7 @@ Please consider this when changing fpm.image here and change it in such template
 "{{ $.Values.image.registryfullpath }}/fpm:{{ $.Values.image.tag }}"
 {{- end -}}
 
-{{- define "worker.hostaliases" }}
+{{- define "workers.hostaliases" }}
 {{- $ := index . 0 }}
 hostAliases:
 - hostnames:
