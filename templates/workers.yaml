@@ -74,9 +74,8 @@ spec:
 
       hostAliases:
       - hostnames:
-        - name: {{ $.Values.hostaliases.name }}
-        ip: {{ $.Values.hostaliases.ip }}
-
+        - backoffice.templatemonster.com
+        ip: 10.132.122.32
 
       restartPolicy: Always
       nodeSelector:
