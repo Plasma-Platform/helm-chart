@@ -6,10 +6,11 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/server-snippet: |
       location = /robots.txt { add_header Content-Type text/plain; return 200 'User-agent: *\nDisallow: /\n'; }
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"  
+    cert-manager.io/cluster-issuer: "cloudflare-issuer"
     nginx.ingress.kubernetes.io/proxy-body-size: 200m
     nginx.ingress.kubernetes.io/proxy-buffer-size: 256k
     nginx.ingress.kubernetes.io/server-alias: {{ .Values.authback.host }}
+    nginx.ingress.kubernetes.io/whitelist-source-range: {{ .Values.authback.whitelist | default "0.0.0.0/0" }}
 spec:
   ingressClassName: nginx
   defaultBackend:
@@ -37,3 +38,4 @@ status:
     ingress:
     - hostname: {{ .Values.authback.host }}
 {{- end -}}
+
