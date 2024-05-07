@@ -67,6 +67,11 @@ nodeSelector:
   name: doks.digitalocean.com/node-pool
   labels: services
 
+#workers
+hostaliases:
+  name: cf.com
+  ip: 1.1.1.1
+
 nameOverride: ""
 fullnameOverride: ""
 

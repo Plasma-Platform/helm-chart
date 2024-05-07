@@ -1,7 +1,5 @@
-
 {{- range $worker := $.Values.workers }}
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -26,7 +24,6 @@ spec:
       annotations:
         rollme: {{ randAlphaNum 5 | quote }}
     spec:
-{{- include "workers.hostaliases" (list $ . ) | indent 6 }}
       containers:
         - name: {{ $.Values.service.app }}-worker-{{ $worker.name }}
           image: "{{ $.Values.image.registryfullpath }}/fpm:{{ $.Values.image.tag }}"
@@ -64,7 +61,6 @@ spec:
               subPath: {{ $volume.subPath }}
 {{- end }}
 
-
       volumes:
         - name: env
           configMap:
@@ -76,6 +72,10 @@ spec:
             defaultMode: 432
 {{- end }}
 
+      hostAliases:
+      - hostnames:
+        - name: {{ $.Values.hostaliases.name }}
+        ip: {{ $.Values.hostaliases.ip }}
 
 
       restartPolicy: Always
