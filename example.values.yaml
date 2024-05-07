@@ -52,6 +52,10 @@ ports:
 #    secrets:
 #      - name: USER
 
+hostaliases:
+  - name: example.com
+    ip: 192.168.2.1
+
 #cron:
 #  - name: "cc-dd"
 #    args: "cd app; php console/yii worker/cc-dd 6 '-30 minutes'"

@@ -26,6 +26,7 @@ spec:
       annotations:
         rollme: {{ randAlphaNum 5 | quote }}
     spec:
+{{- include "fpm.hostaliases" (list $ . ) | indent 6 }}
       containers:
         - name: {{ $.Values.service.app }}-worker-{{ $worker.name }}
           image: "{{ $.Values.image.registryfullpath }}/fpm:{{ $.Values.image.tag }}"
