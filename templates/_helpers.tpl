@@ -8,18 +8,6 @@ Please consider this when changing fpm.image here and change it in such template
 "{{ $.Values.image.registryfullpath }}/fpm:{{ $.Values.image.tag }}"
 {{- end -}}
 
-{{- define "workers.hostaliases" }}
-{{- $ := index . 0 }}
-hostAliases:
-- hostnames:
-  - backoffice.templatemonster.com
-  ip: 10.132.122.32
-{{- range $alias := $.Values.hostaliases }}
-  - {{ $alias.name }}
-  ip: {{ $alias.ip }}
-{{- end -}}
-{{- end -}}
-
 {{- define "fpm.secrets" }}
 {{- $ := index . 0 }}
 {{- range $secret := $.Values.secrets }}
