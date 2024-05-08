@@ -1,7 +1,5 @@
-
 {{- range $worker := $.Values.workers }}
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -63,7 +61,6 @@ spec:
               subPath: {{ $volume.subPath }}
 {{- end }}
 
-
       volumes:
         - name: env
           configMap:
@@ -75,7 +72,10 @@ spec:
             defaultMode: 432
 {{- end }}
 
-
+      hostAliases:
+      - hostnames:
+        - backoffice.templatemonster.com
+        ip: 10.132.122.32
 
       restartPolicy: Always
       nodeSelector:
