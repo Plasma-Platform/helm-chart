@@ -5,7 +5,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ .Values.service.app }}
-  namespace: services
+#  namespace: services
 spec:
   scaleTargetRef:
     kind: Deployment
