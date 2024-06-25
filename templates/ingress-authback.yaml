@@ -1,4 +1,3 @@
-{{- if .Values.ingress.enabled }}
 {{- if .Values.authback }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -38,6 +37,5 @@ status:
   loadBalancer:
     ingress:
     - hostname: {{ .Values.authback.host }}
-{{- end -}}
 {{- end -}}
 
