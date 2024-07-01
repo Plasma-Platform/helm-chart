@@ -15,7 +15,28 @@ spec:
   concurrencyPolicy: Forbid
   schedule: "{{ $cron.schedule }}"
   jobTemplate:
+
     spec:
+
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: {{ .Values.nodeSelector.name }}
+                operator: In
+                values:
+                  - {{ .Values.nodeSelector.labels }}
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                  - nonexisten
+            topologyKey: "kubernetes.io/hostname"
+
       template:
         spec:
           restartPolicy: Never
@@ -67,9 +88,6 @@ spec:
                 secretName: {{ $.Values.onepassitem }}
                 defaultMode: 432
     {{- end }}
-    
-    
-    
     
     
 {{- end }}

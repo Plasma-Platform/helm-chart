@@ -45,7 +45,7 @@ spec:
               - key: app.kubernetes.io/name
                 operator: In
                 values:
-                  - {{ .Values.service.app }}
+                  - nonexisten
             topologyKey: "kubernetes.io/hostname"
 
       imagePullSecrets:
