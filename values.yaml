@@ -8,6 +8,9 @@
 securityContext:
   fsGroup: 33
 
+# --set deployment=false for cron-only projects , etc
+deployment: true
+
 global:
   env: "prod"
   onepassvault: "dev"
