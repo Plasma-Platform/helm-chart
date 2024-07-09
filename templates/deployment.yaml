@@ -1,3 +1,4 @@
+{{- if .Values.deployment }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -216,7 +217,8 @@ spec:
 {{- end }}
 
 
-
       volumes:
 {{- include "fpm.volumes" (list $ . ) | indent 8 }}
 
+
+{{- end -}}
