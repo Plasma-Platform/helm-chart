@@ -129,11 +129,11 @@ spec:
 
           resources:
             limits:
-              cpu: 500m
+              cpu: {{ .Values.service.cpulimit | default "500m" }}
               memory: {{ .Values.service.memorylimit | default "256Mi" }}
             requests:
               cpu: {{ .Values.service.requests | default "50m" }} 
-              memory: 64Mi
+              memory: {{ .Values.service.memoryrequest | default "64Mi" }}
 
           env:
 {{- include "fpm.secrets" (list $ . ) | indent 12 }}
