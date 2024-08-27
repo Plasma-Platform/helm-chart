@@ -168,8 +168,4 @@ spec:
 {{- end }}
 
 
-      volumes:
-{{- include "fpm.volumes" (list $ . ) | indent 8 }}
-
-
 {{- end -}}
