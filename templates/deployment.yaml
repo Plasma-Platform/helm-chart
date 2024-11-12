@@ -100,7 +100,7 @@ spec:
                 - "--fail"
                 - "-o"
                 - "/dev/null"
-                - "http://localhost:{{ .Values.healthcheck.port | default 80 }}{{ .Values.healthcheck.url | default /api/health-check }}"
+                - http://localhost:{{ .Values.healthcheck.port | default 80 }}/{{ .Values.healthcheck.url | default '/api/health-check' }}
             periodSeconds: 10
             failureThreshold: 3
             successThreshold: 1
