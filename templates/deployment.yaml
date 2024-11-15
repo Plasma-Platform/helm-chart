@@ -119,9 +119,6 @@ spec:
 {{- end }}
 
           lifecycle:
-            postStart:
-              exec:
-                command: ["/bin/sh", "-c", "sed -i '0,/autorestart=true/{s/autorestart=true/autorestart=false/}' /etc/supervisor/conf.d/supervisor.conf"]
             preStop:
               exec:
                 command: ["/bin/sh","-c","nginx -s quit; while killall -0 nginx; do sleep 1; done"]
