@@ -16,7 +16,7 @@ spec:
       resources:
         limits:
           cpu: 500m
-          memory: {{ .Values.unittest.memorylimit | default "512Mi" }}
+          memory: {{ .Values.unittest.memorylimit | default "2048Mi" }}
         requests:
           cpu: 10m
 
