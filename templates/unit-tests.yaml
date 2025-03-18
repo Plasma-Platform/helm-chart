@@ -9,14 +9,14 @@ metadata:
 spec:
   containers:
 
-    - name: functional
+    - name: unit
       image: {{ include "fpm.image" . }}
       imagePullPolicy: {{ .Values.image.pullPolicy }}
 
       resources:
         limits:
           cpu: 500m
-          memory: {{ .Values.unittest.memorylimit | default "2048Mi" }}
+          memory: {{ .Values.unittest.memorylimit | default "256Mi" }}
         requests:
           cpu: 10m
 
