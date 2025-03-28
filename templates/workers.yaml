@@ -27,7 +27,7 @@ spec:
       containers:
         - name: {{ $.Values.service.app }}-worker-{{ $worker.name }}
           image: "{{ $.Values.image.registryfullpath }}/fpm:{{ $.Values.image.tag }}"
-          imagePullPolicy: {{ $.Values.image.pullPolicy | IfNotPresent }}
+          imagePullPolicy: {{ $.Values.image.pullPolicy | default "IfNotPresent" }}
           resources:
             limits:
               cpu: 500m

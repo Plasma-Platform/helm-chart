@@ -10,7 +10,7 @@ spec:
   containers:
     - name: functional
       image: {{ include "fpm.image" . }}
-      imagePullPolicy: {{ .Values.image.pullPolicy | IfNotPresent }}
+      imagePullPolicy: {{ .Values.image.pullPolicy | default "IfNotPresent" }}
       resources:
         limits:
           cpu: 500m
