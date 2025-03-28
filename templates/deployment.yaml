@@ -150,7 +150,7 @@ spec:
 # Memcached container
 {{- if .Values.memcached.enabled }}
         - name: memcached
-          image: memcached
+          image: memcached:1.6.38-bookworm
           imagePullPolicy: IfNotPresent
 #          command:
 #            - /bin/bash
