@@ -5,7 +5,9 @@ kind: Pod
 metadata:
   name: "{{ .Release.Name }}-functional"
   annotations:
-    "helm.sh/hook": "test-success"
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "5"
+    "helm.sh/hook-delete-policy": hook-succeeded
 spec:
   containers:
     - name: functional
