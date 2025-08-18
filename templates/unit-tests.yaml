@@ -5,6 +5,7 @@ kind: Pod
 metadata:
   name: "{{ .Release.Name }}-unit"
   annotations:
+    "helm.sh/hook-weight": "1"
     "helm.sh/hook": "test-success"
 spec:
   containers:
