@@ -10,8 +10,8 @@ metadata:
     "helm.sh/hook-weight": "0"
     "helm.sh/hook-delete-policy": hook-succeeded,hook-failed
 spec:
-  successfulJobsHistoryLimit: 5
-  failedJobsHistoryLimit: 5
+  successfulJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 2
   concurrencyPolicy: Forbid
   schedule: "{{ $cron.schedule }}"
   jobTemplate:
