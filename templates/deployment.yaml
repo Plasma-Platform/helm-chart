@@ -64,7 +64,7 @@ spec:
       initContainers:
         - name: appsetup
           image: {{ include "fpm.image" . }}
-          imagePullPolicy: Always
+          imagePullPolicy: {{ .Values.image.pullPolicy | default "IfNotPresent" }}
           resources:
             limits:
               cpu: 500m
@@ -130,7 +130,7 @@ spec:
               cpu: {{ .Values.service.cpulimit | default "500m" }}
               memory: {{ .Values.service.memorylimit | default "256Mi" }}
             requests:
-              cpu: {{ .Values.service.requests | default "50m" }} 
+              cpu: {{ .Values.service.requests | default "50m" }}
               memory: {{ .Values.service.memoryrequest | default "64Mi" }}
 
           env:
