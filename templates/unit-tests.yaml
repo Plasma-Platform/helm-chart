@@ -12,7 +12,7 @@ spec:
 
     - name: unit
       image: {{ include "fpm.image" . }}
-      imagePullPolicy: {{ .Values.image.pullPolicy | default "IfNotPresent" }}
+      imagePullPolicy: {{ $.Values.image.pullPolicy | default "IfNotPresent" }}
 
       resources:
         limits:

@@ -9,7 +9,7 @@ spec:
   containers:
     - name: acceptance
       image: {{ include "fpm.image" . }}
-      imagePullPolicy: {{ .Values.image.pullPolicy | default "IfNotPresent" }}
+      imagePullPolicy: {{ $.Values.image.pullPolicy | default "IfNotPresent" }}
       resources:
         limits:
           memory: 2048Mi
