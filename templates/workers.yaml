@@ -24,13 +24,20 @@ spec:
       annotations:
         rollme: {{ randAlphaNum 5 | quote }}
     spec:
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: {{ $.Values.service.app }}-worker-{{ $worker.name }}
       containers:
         - name: {{ $.Values.service.app }}-worker-{{ $worker.name }}
           image: "{{ $.Values.image.registryfullpath }}/fpm:{{ $.Values.image.tag }}"
           imagePullPolicy: {{ $.Values.image.pullPolicy | default "IfNotPresent" }}
           resources:
             limits:
-              cpu: 500m
+              cpu: 100m
               memory: {{ $worker.memorylimit | default "256Mi" }}
             requests:
               cpu: 10m
