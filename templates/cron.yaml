@@ -28,7 +28,7 @@ spec:
               imagePullPolicy: {{ $.Values.image.pullPolicy | default "IfNotPresent" }}
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 100m
                 requests:
                   cpu: 10m
               command: ["/bin/bash", "-c"]
