@@ -56,7 +56,7 @@ selenium:
 
 image:
   tag: prod
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
   imagePullSecrets: gitlab
   registryfullpath: ''
 
