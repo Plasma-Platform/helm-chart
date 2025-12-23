@@ -31,9 +31,9 @@ Please consider this when changing fpm.image here and change it in such template
     defaultMode: 432
 {{- end -}}
 {{- if .Values.pvc.enabled }}
-- name: "{{ .Values.pvc.volumeName }}"
+- name: "{{ $.Values.pvc.volumeName }}"
   persistentVolumeClaim:
-    claimName: "{{ .Values.pvc.name }}"
+    claimName: "{{ $.Values.pvc.name }}"
 {{- end -}}
 {{- end -}}
 
