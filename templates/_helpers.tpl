@@ -19,8 +19,8 @@ Please consider this when changing fpm.image here and change it in such template
 {{- end -}}
 {{- end -}}
 
-{{- define "fpm.volumes" -}}
-{{- $ := index . 0 -}}
+{{- define "fpm.volumes" }}
+{{- $ := index . 0 }}
 - name: env
   configMap:
     name: {{ $.Values.service.app }}
@@ -29,13 +29,8 @@ Please consider this when changing fpm.image here and change it in such template
   secret:
     secretName: {{ $.Values.onepassitem }}
     defaultMode: 432
-{{- end }}
-{{- if $.Values.pvc.enabled }}
-- name: {{ $.Values.pvc.volumeName | default "data" }}
-  persistentVolumeClaim:
-    claimName: {{ $.Values.pvc.name }}
-{{- end }}
-{{- end }}
+{{- end -}}
+{{- end -}}
 
 {{- define "fpm.volumeMounts" }}
 {{- $ := index . 0 }}
