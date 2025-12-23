@@ -16,6 +16,7 @@ pvc:
   enabled: false
   name: "pvc-name"
   size: "100Mb"
+  volumeName: data
   mountPoint: "/app/data"
 
 global:

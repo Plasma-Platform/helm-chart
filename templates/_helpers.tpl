@@ -30,6 +30,11 @@ Please consider this when changing fpm.image here and change it in such template
     secretName: {{ $.Values.onepassitem }}
     defaultMode: 432
 {{- end -}}
+{{- if .Values.pvc.enabled }}
+- name: "{{ .Values.pvc.volumeName }}"
+  persistentVolumeClaim:
+    claimName: "{{ .Values.pvc.name }}"
+{{- end -}}
 {{- end -}}
 
 {{- define "fpm.volumeMounts" }}
