@@ -48,6 +48,10 @@ Please consider this when changing fpm.image here and change it in such template
   mountPath: {{ $volume.mountPath }}
   subPath: {{ $volume.subPath }} 
 {{- end -}}
+{{- if $.Values.pvc.enabled }}
+- name: {{ $.Values.pvc.volumeName | default "data" }}
+  mountPath: {{ $.Values.pvc.mountPoint | default "/app/data" }}
+{{- end -}}
 {{- end -}}
 
 #{{- define "worker.volumeMounts" }}
