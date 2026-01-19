@@ -43,6 +43,7 @@ yii:
 
 ingress:
   enabled: enabled
+  whitelist: "0.0.0.0/0"
 
 migrate:
   enabled: enabled

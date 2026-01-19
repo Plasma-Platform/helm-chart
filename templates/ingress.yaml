@@ -4,6 +4,7 @@ kind: Ingress
 metadata:
   name: {{ .Values.service.app }}-ingress
   annotations:
+    nginx.ingress.kubernetes.io/whitelist-source-range: {{ .Values.ingress.whitelist | default "0.0.0.0/0" }}
     nginx.ingress.kubernetes.io/server-snippet: |
       location = /robots.txt { add_header Content-Type text/plain; return 200 'User-agent: *\nDisallow: /\n'; }
     nginx.ingress.kubernetes.io/whitelist-source-range: 0.0.0.0/0
