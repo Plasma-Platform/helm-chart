@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+<<<<<<< HEAD
+=======
+## [2.16] - 2026-01-19
+### added
+- nginx.ingress.kubernetes.io/whitelist-source-range parameter for the main ingress
+
 ## [2.12] - 2025-11-25
 ### Changed
 - get image pull policy from values, default IfNotPresent
