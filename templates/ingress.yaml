@@ -7,7 +7,6 @@ metadata:
     nginx.ingress.kubernetes.io/whitelist-source-range: {{ .Values.ingress.whitelist | default "0.0.0.0/0" }}
     nginx.ingress.kubernetes.io/server-snippet: |
       location = /robots.txt { add_header Content-Type text/plain; return 200 'User-agent: *\nDisallow: /\n'; }
-    nginx.ingress.kubernetes.io/whitelist-source-range: 0.0.0.0/0
     cert-manager.io/cluster-issuer: "cloudflare-issuer"  
     nginx.ingress.kubernetes.io/proxy-body-size: 200m
     nginx.ingress.kubernetes.io/proxy-buffer-size: 256k
