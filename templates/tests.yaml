@@ -1,0 +1,73 @@
+{{- if or .Values.phptests.enabled .Values.acceptancetest.enabled .Values.unittest.enabled .Values.functionaltest.enabled }}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ .Release.Name }}-tests"
+  annotations:
+    "helm.sh/hook": "test"
+spec:
+  containers:
+    - name: tests
+      image: {{ include "fpm.image" . }}
+      imagePullPolicy: {{ $.Values.image.pullPolicy | default "IfNotPresent" }}
+      resources:
+        limits:
+          cpu: {{ .Values.unittest.cpulimit | default "500m" }}
+          memory: {{ .Values.unittest.memorylimit | default "256Mi" }}
+        requests:
+          cpu: 100m
+          memory: 256Mi
+      command: ["/bin/bash", "-c"]
+      args:
+        - |
+          set -e
+          cd /app/
+          
+          {{- if .Values.phptests.enabled }}
+          echo "=== PHP Tests Globally Enabled ==="
+
+          {{- if .Values.unittest.enabled }}
+          echo "--- Running Unit Tests ---"
+          ./unit.sh --coverage-text --no-colors
+          {{- end }}
+
+          {{- if .Values.functionaltest.enabled }}
+          echo "--- Running Functional Tests ---"
+          ./functional.sh
+          {{- end }}
+
+          {{- else }}
+          echo "PHP Tests are disabled. Skipping Unit and Functional."
+          {{- end }}
+
+          {{- if .Values.acceptancetest.enabled }}
+          echo "=== Running Acceptance Tests ==="
+          ./acceptance.sh
+          {{- end }}
+          
+          echo "=== All configured tests passed successfully! ==="
+
+      env:
+        - name: test_url
+          value: {{ .Values.service.app }}:8080
+        {{- if .Values.acceptancetest.enabled }}
+        - name: selenium_host
+          value: localhost
+        - name: selenium_port
+          value: '4444'
+        {{- end }}
+      volumeMounts:
+  {{- include "fpm.volumeMounts" (list $ . ) | indent 8 }}
+
+  {{- if .Values.acceptancetest.enabled }}
+  {{- include "selenium.container" . | indent 4 }}
+  {{- end }}
+
+  volumes:
+{{- include "fpm.volumes" (list $ . ) | indent 4 }}
+  restartPolicy: Never
+  nodeSelector:
+    {{ .Values.nodeSelector.name }}: {{ .Values.nodeSelector.labels }}
+  imagePullSecrets:
+    - name: {{ $.Values.image.imagePullSecrets }}
+{{- end }}

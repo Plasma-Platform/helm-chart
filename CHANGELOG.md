@@ -4,8 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-<<<<<<< HEAD
-=======
+## [2.17] - 2026-03-04
+### Changed
+- run all tests in one pod
+
 ## [2.16] - 2026-01-19
 ### added
 - nginx.ingress.kubernetes.io/whitelist-source-range parameter for the main ingress
@@ -25,7 +27,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [2.10] - 2025-03-28
 ### Changed
-- IfNotPresent now default for fpm,workers and tests 
+- IfNotPresent now default for fpm,workers and tests
 
 ## [2.9.0] - 2025-03-28
 ### Changed
