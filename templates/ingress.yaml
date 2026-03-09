@@ -23,26 +23,26 @@ spec:
         - {{ .Values.ingress.hosts }}
       secretName: {{ .Values.service.app }}-tls
   rules:
-  - host: {{ .Values.ingress.hosts }}
-    http:
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
-          backend:
-            service:
-              name: {{ .Values.service.app }}
-              port:
-                number: {{ .Values.service.port }}
-    {{- if .Values.ingress.aliases }}
-    - host: { { .Values.ingress.aliases } }
+    - host: {{ .Values.ingress.hosts }}
       http:
         paths:
           - path: /
             pathType: ImplementationSpecific
             backend:
               service:
-                name: { { .Values.service.app } }
+                name: {{ .Values.service.app }}
                 port:
-                  number: { { .Values.service.port } }
-    {{- end -}}
-{{- end -}}
+                  number: {{ .Values.service.port }}
+  {{- if .Values.ingress.aliases }}
+    - host: {{ .Values.ingress.aliases }}
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: {{ .Values.service.app }}
+                port:
+                  number: {{ .Values.service.port }}
+  {{- end -}}
+  {{- end -}}
