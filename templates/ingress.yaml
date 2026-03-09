@@ -1,4 +1,5 @@
 {{- if .Values.ingress.enabled }}
+{{- $hosts := .Values.ingress.host | default .Values.ingress.hosts }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -20,10 +21,10 @@ spec:
         number: {{ .Values.service.port }}
   tls:
     - hosts:
-        - {{ .Values.ingress.hosts }}
+        - {{ $hosts }}
       secretName: {{ .Values.service.app }}-tls
   rules:
-    - host: {{ .Values.ingress.hosts }}
+    - host: {{ $hosts }}
       http:
         paths:
           - path: /
