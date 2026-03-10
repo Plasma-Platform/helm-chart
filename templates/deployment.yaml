@@ -51,12 +51,12 @@ spec:
 
       imagePullSecrets:
         - name: {{ .Values.image.imagePullSecrets }}
-
+  {{- if .Values.memcached.enabled }}
       hostAliases:
         - ip: 127.0.0.1
           hostnames:
             - memcached
-
+  {{- end }}
       volumes:
 {{- include "fpm.volumes" (list $ . ) | indent 8 }}
 
