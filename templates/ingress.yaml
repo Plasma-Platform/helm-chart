@@ -1,4 +1,5 @@
 {{- if .Values.ingress.enabled }}
+{{- $hosts := .Values.ingress.host | default .Values.ingress.hosts }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -7,10 +8,10 @@ metadata:
     nginx.ingress.kubernetes.io/whitelist-source-range: {{ .Values.ingress.whitelist | default "0.0.0.0/0" }}
     nginx.ingress.kubernetes.io/server-snippet: |
       location = /robots.txt { add_header Content-Type text/plain; return 200 'User-agent: *\nDisallow: /\n'; }
-    cert-manager.io/cluster-issuer: "cloudflare-issuer"  
+    cert-manager.io/cluster-issuer: "cloudflare-issuer"
     nginx.ingress.kubernetes.io/proxy-body-size: 200m
     nginx.ingress.kubernetes.io/proxy-buffer-size: 256k
-    nginx.ingress.kubernetes.io/server-alias: {{ .Values.service.app }} 
+    nginx.ingress.kubernetes.io/server-alias: {{ .Values.service.app }}
 spec:
   ingressClassName: nginx
   defaultBackend:
@@ -20,17 +21,29 @@ spec:
         number: {{ .Values.service.port }}
   tls:
     - hosts:
-        - {{ .Values.ingress.hosts }}
+        - {{ $hosts }}
       secretName: {{ .Values.service.app }}-tls
   rules:
-  - host: {{ .Values.ingress.hosts }}
-    http:
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
-          backend:
-            service:
-              name: {{ .Values.service.app }}
-              port: 
-                number: {{ .Values.service.port }}
-{{- end -}}
+    - host: {{ $hosts }}
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: {{ .Values.service.app }}
+                port:
+                  number: {{ .Values.service.port }}
+  {{- if .Values.ingress.aliases }}
+    - host: {{ .Values.ingress.aliases }}
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: {{ .Values.service.app }}
+                port:
+                  number: {{ .Values.service.port }}
+  {{- end -}}
+  {{- end -}}

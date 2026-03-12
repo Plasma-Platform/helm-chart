@@ -51,12 +51,12 @@ spec:
 
       imagePullSecrets:
         - name: {{ .Values.image.imagePullSecrets }}
-
+  {{- if .Values.memcached.enabled }}
       hostAliases:
         - ip: 127.0.0.1
           hostnames:
             - memcached
-
+  {{- end }}
       volumes:
 {{- include "fpm.volumes" (list $ . ) | indent 8 }}
 
@@ -101,10 +101,10 @@ spec:
                 - "-o"
                 - "/dev/null"
                 - "http://localhost:80/api/health-check"
-            periodSeconds: 10
+            periodSeconds: 30
             failureThreshold: 3
             successThreshold: 1
-            timeoutSeconds: 5
+            timeoutSeconds: 10
 {{- if .Values.startup_probe.enabled }}
           startupProbe:
             httpGet:
@@ -112,8 +112,8 @@ spec:
               port: 80
             failureThreshold: 3
             successThreshold: 1
-            periodSeconds: 15
-            timeoutSeconds: 3
+            periodSeconds: 30
+            timeoutSeconds: 10
             initialDelaySeconds: 1
 
 {{- end }}
