@@ -30,6 +30,11 @@ Please consider this when changing fpm.image here and change it in such template
     secretName: {{ $.Values.onepassitem }}
     defaultMode: 432
 {{- end -}}
+{{- if $.Values.pvc.enabled }}
+- name: {{ $.Values.pvc.volumeName | default "data" }}
+  persistentVolumeClaim:
+    claimName: {{ $.Values.pvc.name }}
+{{- end -}}
 {{- end -}}
 
 {{- define "fpm.volumeMounts" }}
@@ -42,6 +47,10 @@ Please consider this when changing fpm.image here and change it in such template
   readOnly: true
   mountPath: {{ $volume.mountPath }}
   subPath: {{ $volume.subPath }} 
+{{- end -}}
+{{- if $.Values.pvc.enabled }}
+- name: {{ $.Values.pvc.volumeName | default "data" }}
+  mountPath: {{ $.Values.pvc.mountPoint | default "/app/data" }}
 {{- end -}}
 {{- end -}}
 

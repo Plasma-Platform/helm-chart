@@ -16,6 +16,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### added
 - nginx.ingress.kubernetes.io/whitelist-source-range parameter for the main ingress
 
+## [2.15] - 2025-12-23
+### Changed
+- WiP add PVC volume(s)
+
 ## [2.12] - 2025-11-25
 ### Changed
 - get image pull policy from values, default IfNotPresent

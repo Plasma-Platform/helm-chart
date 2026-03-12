@@ -11,6 +11,14 @@ securityContext:
 # --set deployment=false for cron-only projects , etc
 deployment: true
 
+# persistent volume
+pvc:
+  enabled: false
+  name: "pvc-name"
+  size: "100M"
+  volumeName: data
+  mountPoint: "/app/data"
+
 global:
   env: "prod"
   onepassvault: "dev"
