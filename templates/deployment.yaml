@@ -94,17 +94,13 @@ spec:
 {{- if .Values.probes.enabled }}
 
           readinessProbe:
-            exec:
-              command:
-                - "curl"
-                - "--fail"
-                - "-o"
-                - "/dev/null"
-                - "http://localhost:80/api/health-check"
-            periodSeconds: 30
+            httpGet:
+              path: /api/health-check
+              port: 80
+            periodSeconds: 60
             failureThreshold: 3
             successThreshold: 1
-            timeoutSeconds: 10
+            timeoutSeconds: 15
 {{- if .Values.startup_probe.enabled }}
           startupProbe:
             httpGet:
@@ -112,8 +108,8 @@ spec:
               port: 80
             failureThreshold: 3
             successThreshold: 1
-            periodSeconds: 30
-            timeoutSeconds: 10
+            periodSeconds: 60
+            timeoutSeconds: 15
             initialDelaySeconds: 1
 
 {{- end }}
