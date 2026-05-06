@@ -37,7 +37,7 @@ spec:
           imagePullPolicy: {{ $.Values.image.pullPolicy | default "IfNotPresent" }}
           resources:
             limits:
-              cpu: 100m
+              cpu: 500m
               memory: {{ $worker.memorylimit | default "256Mi" }}
             requests:
               cpu: 10m
